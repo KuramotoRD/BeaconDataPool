@@ -85,6 +85,10 @@ router.post('/', function(req, res, next){
 		return;
 	}
 
+	// 管理用データ追加
+	req.body.received_time = new Date().getTime(); // 追加時刻 UNIX time (ms)
+	req.body.send_status   = false;                // 送信ステータス(true:送信済 false:未送信)
+
 	// データ登録
 	db.insert(req.body, function (err, result) {
 		if (err) {
