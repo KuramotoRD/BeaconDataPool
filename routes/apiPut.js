@@ -33,8 +33,8 @@ const beaconSchema = {
 						"type": "integer"
 					},
 					"time": {
-						"description": "検出時刻",
-						"type": "string"
+						"description": "検出時刻(UNIX time)",
+						"type": "integer"
 					},
 					"power": {
 						"description": "電池残量",
