@@ -1,0 +1,21 @@
+{
+  "index": {
+    "fields": [
+      {
+        "name": "gateway_id",
+        "type": "string"
+      },
+      {
+        "name": "received_time",
+        "type": "number"
+      },
+      {
+        "name": "send_status",
+        "type": "boolean"
+      }
+    ]
+  },
+  "ddoc": "beacondb_index",
+  "name": "beacon_list-text",
+  "type": "text"
+}

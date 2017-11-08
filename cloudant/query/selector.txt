@@ -1,0 +1,20 @@
+{
+   "selector": {
+      "received_time": {
+         "$gt": 1510126979000
+      },
+      "send_status": false
+   },
+   "fields": [
+      "_id",
+      "received_time",
+      "send_status",
+      "list"
+  ],
+  "limit": 100,
+  "sort": [
+    {
+     "received_time:number": "desc"
+    }
+  ]
+}
