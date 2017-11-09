@@ -1,11 +1,90 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+	<head>
+		<link rel="stylesheet" href="/bower_components/jquery-ui/themes/base/jquery-ui.css">
+		<link rel="stylesheet" href="/bower_components/SlickGrid-6pac/slick.grid.css" type="text/css"/>
+		<script src="/bower_components/jquery/dist/jquery.js"></script>
+		<script src="/bower_components/jquery-ui/jquery-ui.js"></script>
+		<script src="/javascripts/jquery.event.drag-2.3.0.js"></script>
+		<script src="/bower_components/SlickGrid-6pac/slick.core.js"></script>
+		<script src="/bower_components/SlickGrid-6pac/slick.grid.js"></script>
+		<script src="/bower_components/SlickGrid-6pac/slick.dataview.js"></script>
+		<script src="/bower_components/SlickGrid-6pac/slick.formatters.js"></script>
+
+		<title><%= title %></title>
+		<link rel='stylesheet' href='/stylesheets/style.css' />
+	</head>
+	<body>
+		<h1><%= title %></h1>
+
+		<div id="BeaconHeaderGrid" style="width:90%;height:500px;"></div>
+
+		<script>
+(function() {
+	var grid;
+	var dataView;
+	var datetimeFormatter = function(row, cell, value, columnDef, dataContext) {
+		return new Date(value).toString();
+	};
+	var linkFormatter = function(row, cell, value, columnDef, dataContext) {
+		return '<a href="/api/get/' + value + '" target="beaconDataWindow">詳細</a>';
+	};
+	var columns = [
+		{id: '_id', name: 'ID', field: '_id', minWidth: 300},
+		{id: 'gateway_id', name: 'Gateway', field: 'gateway_id', minWidth: 100},
+		{id: 'received_time', name: '追加時刻', field: 'received_time', minWidth: 300, formatter: datetimeFormatter},
+		{id: 'send_status', name: '送信済', field: 'send_status', minWidth: 60, formatter: Slick.Formatters.Checkmark},
+		{id: 'detail', name: '詳細', field: '_id', formatter: linkFormatter}
+	];
+	var options = {
+		enableCellNavigation: true,
+		enableColumnReorder: false
+	};
+
+	$(function() {
+		dataView = new Slick.Data.DataView();
+		dataView.onRowCountChanged.subscribe(function(e, args) {
+			grid.updateRowCount();
+			grid.render();
+		});
+
+		dataView.onRowsChanged.subscribe(function(e, args) {
+			grid.invalidateRows(args.rows);
+			grid.render();
+		});
+
+		grid = new Slick.Grid('#BeaconHeaderGrid', dataView, columns, options);
+
+		getBeaconHeaderList();
+	});
+
+	function getBeaconHeaderList() {
+		$.ajax({
+			url: '/api/get/headerlist',
+			type: 'POST',
+			contentType: 'application/json',
+			dataType: 'json',
+			data: JSON.stringify({
+				'start_time': 1,
+				'limit': 100
+			})
+		})
+		.done(function(json_data) {
+			if (json_data.resultFlag) {
+				dataView.beginUpdate();
+				dataView.setItems(json_data.data, '_id');
+				dataView.endUpdate();
+			}
+			else {
+				window.alert("ERROR: " + json_data.message);
+			}
+		})
+		.fail(function() {
+			window.alert('ERROR: 通信失敗');
+		});
+	};
+}());
+		</script>
+
+	</body>
 </html>
