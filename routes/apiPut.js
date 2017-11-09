@@ -8,7 +8,7 @@ var db = cloudant.db.use('beacondb');
 var Validator = require('jsonschema').Validator;
 var beaconValidator = new Validator();
 
-// JSONƒXƒL[ƒ}
+// JSONã‚¹ã‚­ãƒ¼ãƒ
 const beaconSchema = {
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
@@ -33,15 +33,15 @@ const beaconSchema = {
 						"type": "integer"
 					},
 					"time": {
-						"description": "ŒŸo(UNIX time)",
+						"description": "æ¤œå‡ºæ™‚åˆ»(UNIX time)",
 						"type": "integer"
 					},
 					"power": {
-						"description": "“d’rc—Ê",
+						"description": "é›»æ± æ®‹é‡",
 						"type": "boolean"
 					},
 					"rssi": {
-						"description": "“d”g‹­“x",
+						"description": "é›»æ³¢å¼·åº¦",
 						"type": "integer"
 					}
 				}
@@ -50,10 +50,10 @@ const beaconSchema = {
 	}
 };
 
-// Beaconƒf[ƒ^‚ğ’Ç‰Á‚·‚é
+// Beaconãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ ã™ã‚‹
 router.post('/', function(req, res, next){
 
-	// JSONƒoƒŠƒf[ƒVƒ‡ƒ“
+	// JSONãƒãƒªãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³
 	var check = beaconValidator.validate(req.body, beaconSchema);
 	if (check.errors.length > 0) {
 		console.log(check.errors);
@@ -75,7 +75,7 @@ router.post('/', function(req, res, next){
 		return;
 	}
 
-	// Beaconƒf[ƒ^‚ª‘¶İ‚µ‚È‚¢ê‡‚Í“o˜^‚µ‚È‚¢
+	// Beaconãƒ‡ãƒ¼ã‚¿ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ç™»éŒ²ã—ãªã„
 	if (req.body.list.length == 0) {
 		res.json({
 			resultFlag: true,
@@ -85,11 +85,11 @@ router.post('/', function(req, res, next){
 		return;
 	}
 
-	// ŠÇ——pƒf[ƒ^’Ç‰Á
-	req.body.received_time = new Date().getTime(); // ’Ç‰Á UNIX time (ms)
-	req.body.send_status   = false;                // ‘—MƒXƒe[ƒ^ƒX(true:‘—MÏ false:–¢‘—M)
+	// ç®¡ç†ç”¨ãƒ‡ãƒ¼ã‚¿è¿½åŠ 
+	req.body.received_time = new Date().getTime(); // è¿½åŠ æ™‚åˆ» UNIX time (ms)
+	req.body.send_status   = false;                // é€ä¿¡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹(true:é€ä¿¡æ¸ˆ false:æœªé€ä¿¡)
 
-	// ƒf[ƒ^“o˜^
+	// ãƒ‡ãƒ¼ã‚¿ç™»éŒ²
 	db.insert(req.body, function (err, result) {
 		if (err) {
 			console.log('DB Access Error!!!');

@@ -8,13 +8,13 @@ var db = cloudant.db.use('beacondb');
 var Validator = require('jsonschema').Validator;
 var searchValidator = new Validator();
 
-// JSONƒXƒL[ƒ} ŒŸõğŒ
+// JSONã‚¹ã‚­ãƒ¼ãƒ æ¤œç´¢æ¡ä»¶
 const searchSchema = {
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
 	"properties": {
 		"start_time": {
-			"description": "æ“¾ŠJn UNIX time(ms) (Default:1ŠÔ‘O)",
+			"description": "å–å¾—é–‹å§‹æ™‚åˆ» UNIX time(ms) (Default:1æ™‚é–“å‰)",
 			"type": "integer"
 		},
 		"gateway_id": {
@@ -22,17 +22,17 @@ const searchSchema = {
 			"type": "string"
 		},
 		"status": {
-			"description": "‘—MƒXƒe[ƒ^ƒX@true:‘—MÏ false:–¢‘—M",
+			"description": "é€ä¿¡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã€€true:é€ä¿¡æ¸ˆ false:æœªé€ä¿¡",
 			"type": "boolean"
 		},
 		"limit": {
-			"description": "æ“¾Œ”ãŒÀ (Default:20)",
+			"description": "å–å¾—ä»¶æ•°ä¸Šé™ (Default:20)",
 			"type": "integer"
 		}
 	}
 };
 
-// Beaconƒf[ƒ^‚ğIDw’è‚Åæ“¾‚·‚é
+// Beaconãƒ‡ãƒ¼ã‚¿ã‚’IDæŒ‡å®šã§å–å¾—ã™ã‚‹
 router.get('/:id', function(req, res, next){
 
 	// Query
@@ -49,7 +49,7 @@ router.get('/:id', function(req, res, next){
 		],
 	};
 
-	// ƒf[ƒ^æ“¾
+	// ãƒ‡ãƒ¼ã‚¿å–å¾—
 	db.find(query, function(err, data) {
 		if (err) {
 			console.log('DB Access Error!!!');
@@ -79,10 +79,10 @@ router.get('/:id', function(req, res, next){
 	});
 });
 
-// Beaconƒf[ƒ^‚Ìƒwƒbƒ_ƒŠƒXƒg‚ğæ“¾‚·‚é
+// Beaconãƒ‡ãƒ¼ã‚¿ã®ãƒ˜ãƒƒãƒ€ãƒªã‚¹ãƒˆã‚’å–å¾—ã™ã‚‹
 router.post('/headerlist', function(req, res, next){
 
-	// JSONƒoƒŠƒf[ƒVƒ‡ƒ“
+	// JSONãƒãƒªãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³
 	var check = searchValidator.validate(req.body, searchSchema);
 	if (check.errors.length > 0) {
 		console.log(check.errors);
@@ -104,15 +104,15 @@ router.post('/headerlist', function(req, res, next){
 		return;
 	}
 
-	// ŒŸõğŒ
-	var startTime = req.body.start_time; //æ“¾ŠJn
+	// æ¤œç´¢æ¡ä»¶
+	var startTime = req.body.start_time; //å–å¾—é–‹å§‹æ™‚åˆ»
 	if (typeof startTime === 'undefined') {
 		var now = new Date();
 		now.setHours(now.getHours() + 1);
 		startTime = now.getTime();
 	}
 
-	var limit = req.body.limit; //æ“¾Œ”ãŒÀ
+	var limit = req.body.limit; //å–å¾—ä»¶æ•°ä¸Šé™
 	if (typeof startTime === 'undefined') {
 		limit = 20;
 	}
@@ -145,7 +145,7 @@ router.post('/headerlist', function(req, res, next){
 		query.selector.send_status = req.body.status;
 	}
 
-	// ƒf[ƒ^æ“¾
+	// ãƒ‡ãƒ¼ã‚¿å–å¾—
 	db.find(query, function(err, data) {
 		if (err) {
 			console.log('DB Access Error!!!');
