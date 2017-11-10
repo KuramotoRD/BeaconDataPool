@@ -17,31 +17,99 @@
 	<body>
 		<h1><%= title %></h1>
 
-		<div id="BeaconHeaderGrid" style="width:90%;height:500px;"></div>
+		<div>
+			<label>取得期間
+			<input type="text" name="startDate" id="startDate" style="width:80px">
+			<input type="text" name="startTime" id="startTime" style="width:60px">
+			～</label>
+
+			<label style="margin-left:20px">Gateway ID
+			<input type="text" name="gatewayId" id="gatewayId" style="width:150px">
+			</label>
+
+			<label style="margin-left:20px">表示件数
+			<select name="limit" id="limit">
+				<option>50</option>
+				<option>100</option>
+				<option>300</option>
+				<option>500</option>
+				<option>1000</option>
+			</select>
+			</label>
+
+			<img name="reload" id="reload" src="images/reload.png" alt="reload" title="Reload Data" width="20" height="20" style="margin-left:20px">
+		</div>
+
+		<div id="BeaconHeaderGrid" style="width:90%; height:500px; margin-top:10px"></div>
 
 		<script>
 (function() {
 	var grid;
 	var dataView;
+
+	// 日付Column用Formatter
 	var datetimeFormatter = function(row, cell, value, columnDef, dataContext) {
-		return new Date(value).toString();
+		return new Date(value).toFullLocaleString();
 	};
+	// 詳細Column用Formatter
 	var linkFormatter = function(row, cell, value, columnDef, dataContext) {
 		return '<a href="/api/get/' + value + '" target="beaconDataWindow">詳細</a>';
 	};
+
+	// Column定義
 	var columns = [
 		{id: '_id', name: 'ID', field: '_id', minWidth: 300},
 		{id: 'gateway_id', name: 'Gateway', field: 'gateway_id', minWidth: 100},
-		{id: 'received_time', name: '追加時刻', field: 'received_time', minWidth: 300, formatter: datetimeFormatter},
+		{id: 'received_time', name: '追加時刻', field: 'received_time', minWidth: 180, formatter: datetimeFormatter},
 		{id: 'send_status', name: '送信済', field: 'send_status', minWidth: 60, formatter: Slick.Formatters.Checkmark},
 		{id: 'detail', name: '詳細', field: '_id', formatter: linkFormatter}
 	];
+
+	// Option定義
 	var options = {
 		enableCellNavigation: true,
 		enableColumnReorder: false
 	};
 
+	// 初期化処理(jQuery UI)
 	$(function() {
+		$('#startDate').datepicker();
+		$('#startDate').datepicker('option', 'dateFormat', 'yy/mm/dd');
+		$('#startDate').on('change', function() {
+			getBeaconHeaderList();
+		});
+
+		$('#startTime').on('change', function() {
+			getBeaconHeaderList();
+		});
+
+		$('#gatewayId').on('change', function() {
+			getBeaconHeaderList();
+		});
+
+		$('#limit').selectmenu({
+			change: function(event, data) {
+				getBeaconHeaderList();
+			}
+		});
+		$('#limit').selectmenu('option', 'width', 90);
+
+		$('#reload').tooltip()+
+		$('#reload').on('click', function() {
+			getBeaconHeaderList();
+		});
+
+
+		// 初期値設定
+		$('#startDate').val(new Date().toLocaleDateString());
+		$('#startTime').val('00:00:00');
+		$('#limit').val('100');
+		$('#limit').selectmenu('refresh')
+	});
+
+	// 初期化処理(Grid)
+	$(function() {
+		// DataView生成
 		dataView = new Slick.Data.DataView();
 		dataView.onRowCountChanged.subscribe(function(e, args) {
 			grid.updateRowCount();
@@ -53,35 +121,58 @@
 			grid.render();
 		});
 
+		// Grid生成
 		grid = new Slick.Grid('#BeaconHeaderGrid', dataView, columns, options);
 
+		// Beacaonデータ取得
 		getBeaconHeaderList();
 	});
 
+	// BeaconデータHeaderList取得
 	function getBeaconHeaderList() {
+		// 送信データ(JSON)
+		var sendData = {};
+		sendData.start_time = Date.parse($('#startDate').val() + ' ' + $('#startTime').val());
+		sendData.limit = Number($('#limit').val())
+		if ($('#gatewayId').val()) {
+			sendData.gateway_id = $('#gatewayId').val();
+		}
+
+		// 非同期呼び出し
 		$.ajax({
 			url: '/api/get/headerlist',
 			type: 'POST',
 			contentType: 'application/json',
 			dataType: 'json',
-			data: JSON.stringify({
-				'start_time': 1,
-				'limit': 100
-			})
+			data: JSON.stringify(sendData)
 		})
 		.done(function(json_data) {
 			if (json_data.resultFlag) {
+				// 一覧に反映
 				dataView.beginUpdate();
 				dataView.setItems(json_data.data, '_id');
 				dataView.endUpdate();
 			}
 			else {
+				// エラーメッセージ表示
 				window.alert("ERROR: " + json_data.message);
 			}
 		})
 		.fail(function() {
 			window.alert('ERROR: 通信失敗');
 		});
+	};
+
+	// Dateにfunction追加
+	Date.prototype.toLocaleDateString = function() {
+		return [
+			this.getFullYear(),
+			('0' + (this.getMonth() + 1)).slice(-2),
+			('0' + this.getDate()).slice(-2)
+			].join( '/' );
+	}
+	Date.prototype.toFullLocaleString = function() {
+		return this.toLocaleDateString() + ' ' + this.toLocaleTimeString() + "." + ('00' + this.getMilliseconds()).slice(-3);
 	};
 }());
 		</script>
