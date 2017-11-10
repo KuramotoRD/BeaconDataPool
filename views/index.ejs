@@ -73,22 +73,29 @@
 
 	// 初期化処理(jQuery UI)
 	$(function() {
+		// WebStorage
+		var storage = window.localStorage;
+
 		$('#startDate').datepicker();
 		$('#startDate').datepicker('option', 'dateFormat', 'yy/mm/dd');
 		$('#startDate').on('change', function() {
+			storage.setItem('startDate', $('#startDate').val());
 			getBeaconHeaderList();
 		});
 
 		$('#startTime').on('change', function() {
+			storage.setItem('startTime', $('#startTime').val());
 			getBeaconHeaderList();
 		});
 
 		$('#gatewayId').on('change', function() {
+			storage.setItem('gatewayId', $('#gatewayId').val());
 			getBeaconHeaderList();
 		});
 
 		$('#limit').selectmenu({
 			change: function(event, data) {
+				storage.setItem('limit', $('#limit').val());
 				getBeaconHeaderList();
 			}
 		});
@@ -101,9 +108,12 @@
 
 
 		// 初期値設定
-		$('#startDate').val(new Date().toLocaleDateString());
-		$('#startTime').val('00:00:00');
-		$('#limit').val('100');
+		$('#startDate').val(storage.startDate ? storage.startDate : new Date().toLocaleDateString());
+		$('#startTime').val(storage.startTime ? storage.startTime : '00:00:00');
+		if (storage.gatewayId) {
+			$('#gatewayId').val(storage.gatewayId);
+		}
+		$('#limit').val(storage.limit ? storage.limit : '100');
 		$('#limit').selectmenu('refresh')
 	});
 
