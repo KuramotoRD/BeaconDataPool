@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/bower_components/jquery-ui/themes/base/jquery-ui.css">
+		<link rel="stylesheet" href="/bower_components/SlickGrid-6pac/slick.grid.css" type="text/css"/>
+		<script src="/bower_components/jquery/dist/jquery.js"></script>
+		<script src="/bower_components/jquery-ui/jquery-ui.js"></script>
+		<script src="/javascripts/jquery.event.drag-2.3.0.js"></script>
+		<script src="/bower_components/SlickGrid-6pac/slick.core.js"></script>
+		<script src="/bower_components/SlickGrid-6pac/slick.grid.js"></script>
+		<script src="/bower_components/SlickGrid-6pac/slick.dataview.js"></script>
+		<script src="/bower_components/SlickGrid-6pac/slick.formatters.js"></script>
+
+		<script src="/javascripts/common.js"></script>
+		<script src="/javascripts/views/detail.js"></script>
+
+		<title><%= title %></title>
+		<link rel='stylesheet' href='/stylesheets/style.css' />
+	</head>
+	<body>
+		<h1><%= title %></h1>
+
+		<div>
+			<div>
+				<label><span class="headerLabel">ID</span>: </label>
+				<span class="headerValue" name="headerId" id="headerId"><%= headerId %></span>
+			</div>
+			<div>
+				<label><span class="headerLabel">Gateway</span>: </label>
+				<span class="headerValue" class="headerValue" name="gatewayId" id="gatewayId"></span>
+			</div>
+			<div>
+				<label><span class="headerLabel">追加時刻</span>: </label>
+				<span class="headerValue" name="receivedTime" id="receivedTime"></span>
+			</div>
+			<div>
+				<label><span class="headerLabel">送信済</span>: </label>
+				<span class="headerValue" name="sendStatus" id="sendStatus"></span>
+			<div>
+		</div>
+
+		<div id="BeaconDetail" style="width:700px; height:500px; margin-top:10px"></div>
+	</body>
+</html>
