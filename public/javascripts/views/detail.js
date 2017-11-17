@@ -10,13 +10,17 @@
 	var datetimeFormatter = function(row, cell, value, columnDef, dataContext) {
 		return new Date(value).toFullLocaleString();
 	};
+	// PowerColumn用Formatter
+	var powerFormatter = function(row, cell, value, columnDef, dataContext) {
+		return value ? "<img src='../images/delete.png'>" : "";
+	}
 
 	// Column定義
 	var columns = [
 		{id: 'major', name: 'Major', field: 'major', minWidth: 150},
 		{id: 'minor', name: 'Minor', field: 'minor', minWidth: 150},
 		{id: 'time', name: '検知時刻', field: 'time', minWidth: 180, formatter: datetimeFormatter},
-		{id: 'power', name: 'Power', field: 'power', minWidth: 60},
+		{id: 'power', name: 'Power', field: 'power', minWidth: 60, formatter: powerFormatter},
 		{id: 'rssi', name: 'RSSI', field: 'rssi', minWidth: 60}
 	];
 
