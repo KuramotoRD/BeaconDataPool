@@ -85,8 +85,17 @@ router.post('/', function(req, res, next){
 		return;
 	}
 
+	// RSSI最大値取得
+	var rssiMax = -999;
+	for (var i = 0; i < req.body.list.length; i++) {
+		if (req.body.list[i].rssi > rssiMax) {
+			rssiMax = req.body.list[i].rssi;
+		}
+	}
+
 	// 管理用データ追加
 	req.body.received_time = new Date().getTime(); // 追加時刻 UNIX time (ms)
+	req.body.rssi_max      = rssiMax;              // RSSI最大値
 	req.body.send_status   = false;                // 送信ステータス(true:送信済 false:未送信)
 
 	// データ登録
