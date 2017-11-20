@@ -21,6 +21,10 @@ const searchSchema = {
 			"description": "Gateway ID",
 			"type": "string"
 		},
+		"rssi": {
+			"description": "RSSI閾値",
+			"type": "integer"
+		},
 		"status": {
 			"description": "送信ステータス　true:送信済 false:未送信",
 			"type": "boolean"
@@ -142,6 +146,9 @@ router.post('/headerlist', function(req, res, next){
 
 	if (typeof req.body.gateway_id !== 'undefined') {
 		query.selector.gateway_id = req.body.gateway_id;
+	}
+	if (typeof req.body.rssi !== 'undefined') {
+		query.selector.rssi_max = { '$gt': req.body.rssi };
 	}
 	if (typeof req.body.status !== 'undefined') {
 		query.selector.send_status = req.body.status;

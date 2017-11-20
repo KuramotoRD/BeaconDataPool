@@ -106,9 +106,12 @@
 		// 送信データ(JSON)
 		var sendData = {};
 		sendData.start_time = Date.parse($('#startDate').val() + ' ' + $('#startTime').val());
-		sendData.limit = Number($('#limit').val())
+		sendData.limit = Number($('#limit').val());
 		if ($('#gatewayId').val()) {
 			sendData.gateway_id = $('#gatewayId').val();
+		}
+		if ($('#rssi').val()) {
+			sendData.rssi = Number($('#rssi').val());
 		}
 
 		// 非同期Ajax
