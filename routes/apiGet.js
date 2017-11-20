@@ -44,6 +44,7 @@ router.get('/:id', function(req, res, next){
 			"_id",
 			"gateway_id",
 			"received_time",
+			"rssi_max",
 			"send_status",
 			"list"
 		],
@@ -128,6 +129,7 @@ router.post('/headerlist', function(req, res, next){
 			"_id",
 			"gateway_id",
 			"received_time",
+			"rssi_max",
 			"send_status"
 		],
 		'limit': limit,

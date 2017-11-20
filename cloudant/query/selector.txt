@@ -9,6 +9,7 @@
       "_id",
       "received_time",
       "send_status",
+      "rssi_max",
       "list"
   ],
   "limit": 100,

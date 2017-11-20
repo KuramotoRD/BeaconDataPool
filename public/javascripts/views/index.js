@@ -20,6 +20,7 @@
 		{id: '_id', name: 'ID', field: '_id', minWidth: 300},
 		{id: 'gateway_id', name: 'Gateway', field: 'gateway_id', minWidth: 100},
 		{id: 'received_time', name: '追加時刻', field: 'received_time', minWidth: 180, formatter: datetimeFormatter},
+		{id: 'rssi', name: 'RSSI', field: 'rssi_max', minWidth: 60},
 		{id: 'send_status', name: '送信済', field: 'send_status', minWidth: 60, formatter: Slick.Formatters.Checkmark},
 		{id: 'detail', name: '詳細', field: '_id', minWidth: 100, formatter: linkFormatter}
 	];
