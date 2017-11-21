@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var detail = require('./routes/detail');
+var detailUnsend = require('./routes/detailUnsend');
 var users = require('./routes/users');
 var apiPut = require('./routes/apiPut');
 var apiGet = require('./routes/apiGet');
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/detail', detail);
+app.use('/detailUnsend', detailUnsend);
 app.use('/users', users);
 app.use('/api/put', apiPut);
 app.use('/api/get', apiGet);

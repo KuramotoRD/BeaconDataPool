@@ -178,4 +178,30 @@ router.post('/headerlist', function(req, res, next){
 	});
 });
 
+// Beaconデータの未送信リストを取得する
+router.post("/unsendlist", function(req, res, next){
+
+	db.view('beacondb_view', 'unsend-view', function(err, data) {
+		if (err) {
+			console.log("DB Access Error!!!");
+			console.log(err);
+
+			res.json({
+				resultFlag: false,
+				message: 'DB Access Error!!!'
+			});
+
+			return;
+		}
+
+		var resultData = {
+			resultFlag: true,
+			message: 'sucess',
+			data: data.rows
+		};
+
+		res.json(resultData);
+	});
+});
+
 module.exports = router;

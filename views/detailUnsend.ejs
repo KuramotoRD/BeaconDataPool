@@ -12,7 +12,7 @@
 		<script src="/bower_components/SlickGrid-6pac/slick.formatters.js"></script>
 
 		<script src="/javascripts/common.js"></script>
-		<script src="/javascripts/views/index.js"></script>
+		<script src="/javascripts/views/detailUnsend.js"></script>
 
 		<title><%= title %></title>
 		<link rel='stylesheet' href='/stylesheets/style.css' />
@@ -21,34 +21,13 @@
 		<h1><%= title %></h1>
 
 		<div>
-			<a href="/detailUnsend">未送信Data</a>
+			<a href="/">全Data</a>
 
-			<label style="margin-left:20px">取得期間
-			<input type="text" name="startDate" id="startDate" style="width:80px">
-			<input type="text" name="startTime" id="startTime" style="width:60px">
-			～</label>
-
-			<label style="margin-left:20px">Gateway ID
-			<input type="text" name="gatewayId" id="gatewayId" style="width:150px">
-			</label>
-
-			<label style="margin-left:20px">RSSI
-			<input type="text" name="rssi" id="rssi" style="width:30px">
-			以上</label>
-
-			<label style="margin-left:20px">表示件数
-			<select name="limit" id="limit">
-				<option>50</option>
-				<option>100</option>
-				<option>300</option>
-				<option>500</option>
-				<option>1000</option>
-			</select>
-			</label>
+			<label style="margin-left:20px">データ件数: <span name="dataCount" id="dataCount"></span></label>
 
 			<img name="reload" id="reload" src="images/reload.png" alt="reload" title="Reload Data" width="20" height="20" style="margin-left:20px">
 		</div>
 
-		<div id="BeaconHeaderGrid" style="width:100%; height:500px; margin-top:10px"></div>
+		<div id="BeaconDetailUnsend" style="width:800px; height:500px; margin-top:10px"></div>
 	</body>
 </html>

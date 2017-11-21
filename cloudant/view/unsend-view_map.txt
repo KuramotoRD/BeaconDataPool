@@ -1,0 +1,10 @@
+function (doc) {
+  if (!doc.send_status && doc.list) {
+    for (var i = 0; i < doc.list.length; i++) {
+      var data = doc.list[i];
+      if (data.rssi > -90) {
+        emit([data.time, doc.gateway_id, data.major, data.minor], {"power": data.power, "rssi": data.rssi});
+      }
+    }
+  }
+}
